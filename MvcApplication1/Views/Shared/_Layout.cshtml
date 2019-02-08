@@ -24,6 +24,11 @@
                     <li>@Html.ActionLink("Домашняя страница", "Index", "Home")</li>
                     <li>@Html.ActionLink("О программе", "About", "Home")</li>
                     <li>@Html.ActionLink("Контакт", "Contact", "Home")</li>
+                    @if (Session["session_key"] == null)
+                    {
+                        <li>@Html.ActionLink("Регистрация", "Registration", "Home")</li>
+                        <li>@Html.ActionLink("Auth", "Authorization", "Home")</li>
+                    }
                 </ul>
             </div>
         </div>

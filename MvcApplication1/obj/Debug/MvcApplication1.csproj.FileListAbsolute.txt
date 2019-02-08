@@ -55,3 +55,6 @@ A:\dev\ELMA\template-mvc4-vs2017-master\MvcApplication1\bin\ru\System.Web.WebPag
 A:\dev\ELMA\template-mvc4-vs2017-master\MvcApplication1\obj\Debug\MvcApplication1.csproj.CopyComplete
 A:\dev\ELMA\template-mvc4-vs2017-master\MvcApplication1\obj\Debug\MvcApplication1.dll
 A:\dev\ELMA\template-mvc4-vs2017-master\MvcApplication1\obj\Debug\MvcApplication1.pdb
+A:\dev\ELMA\template-mvc4-vs2017-master\MvcApplication1\bin\CryptSharp.dll
+A:\dev\ELMA\template-mvc4-vs2017-master\MvcApplication1\bin\CryptSharp.pdb
+A:\dev\ELMA\template-mvc4-vs2017-master\MvcApplication1\bin\CryptSharp.xml
