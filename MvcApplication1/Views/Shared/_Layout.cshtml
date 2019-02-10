@@ -1,11 +1,15 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title – приложение ASP.NET</title>
     @Styles.Render("~/Content/css")
+    @if (Session["session_key"] != null)
+    {
+        @Styles.Render("~/Content/dropdown.css")
+    }
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
@@ -30,6 +34,16 @@
                         <li>@Html.ActionLink("Auth", "Authorization", "Home")</li>
                     }
                 </ul>
+                @if (Session["session_key"] != null)
+                {
+                    <div class="dropdown">
+                        <button class="dropbtn">@Session["session_key"]</button>
+                        <div class="dropdown-content">
+                            <a href="@Url.Action("UploadDocs", "Home")">Загрузка документов</a>"
+                            <a href="@Url.Action("LogOut", "Home")">Выход</a>
+                        </div>
+                    </div>
+                }
             </div>
         </div>
     </div>

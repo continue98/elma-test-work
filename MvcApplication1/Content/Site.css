@@ -21,3 +21,9 @@ h6.error_message_razor {
     color: black;
     font-weight: bold;
 }
+.btn-group {
+    color : cornflowerblue;
+    float: right;
+    padding-top: 8px;
+    padding-bottom: 7px;
+}

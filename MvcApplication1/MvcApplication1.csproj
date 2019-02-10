@@ -145,6 +145,7 @@
     <Compile Include="Models\AuthorizationModel.cs" />
     <Compile Include="Models\RegistrationModel.cs" />
     <Compile Include="Models\Users.cs" />
+    <Compile Include="src\DownloadHelper.cs" />
     <Compile Include="src\HashUtillity.cs" />
     <Compile Include="src\NHibernateSessionManeger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -153,14 +154,25 @@
     <Content Include="Content\authorization.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\dropzone.css" />
     <Content Include="Content\registration.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="Content\dropdown.css" />
     <None Include="Scripts\jquery-1.7.1.intellisense.js" />
     <EmbeddedResource Include="Mappings\Users.hbm.xml" />
     <Content Include="Models\hibernate.cfg.xml">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Scripts\dropzone.js" />
+    <Content Include="Content\dropzone-styles\basic.css" />
+    <Content Include="Content\dropzone-styles\basic.min.css" />
+    <Content Include="Scripts\dropzone\dropzone-amd-module.js" />
+    <Content Include="Scripts\dropzone\dropzone-amd-module.min.js" />
+    <Content Include="Content\dropzone-styles\dropzone.css" />
+    <Content Include="Scripts\dropzone\dropzone.js" />
+    <Content Include="Scripts\dropzone\dropzone.min.css" />
+    <Content Include="Scripts\dropzone\dropzone.min.js" />
     <Content Include="Scripts\jquery-1.7.1.js" />
     <Content Include="Scripts\jquery-1.7.1.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -204,9 +216,10 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Registration.cshtml" />
     <Content Include="Views\Home\Authorization.cshtml" />
+    <Content Include="Views\Home\UploadDocs.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
+    <Folder Include="App_Data\uploads\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

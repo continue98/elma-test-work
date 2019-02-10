@@ -12,6 +12,7 @@ namespace MvcApplication1.Controllers
     {
         public ActionResult Index()
         {
+
             return View();
         }
         public ActionResult Registration()
@@ -75,12 +76,13 @@ namespace MvcApplication1.Controllers
                 string hashed_password = usr.hash_password;
                 string salt = usr.salt;
                 
+
                 HashUtillity hashUtillty = new HashUtillity();
                 if (hashUtillty.compare_password(auth_model.Password, hashed_password, salt))
                 {
-                    Session.Timeout = 10;
-                    Session["session_key"] = Session.SessionID;
-                    return RedirectToAction("index");
+                    Session.Timeout = 5;
+                    Session["session_key"] = auth_model.Name;
+                    return RedirectToAction("Index");
                 }
                 else
                 {
@@ -89,5 +91,29 @@ namespace MvcApplication1.Controllers
                 }
             }
         }
-    }
+        [HttpGet]
+        public ActionResult LogOut()
+        {
+            Session["session_key"] = null;
+            return RedirectToAction("index");
+        }
+
+        [HttpPost]
+        public ActionResult Index(HttpPostedFileBase file)
+        {
+            MvcApplication1.src.DownloadHelper upl_file = new MvcApplication1.src.DownloadHelper(Session["session_key"].ToString());
+            string error_message = upl_file.UploadUserFile(file);
+            if (error_message != null)
+            {
+                ViewBag.ResultErrorMessage = upl_file.ErrorMessage;
+            }
+            return View();
+
+        }
+        public ActionResult UploadDocs()
+        {
+
+            return View();
+        }
+        }
 }
