@@ -1,0 +1,28 @@
+﻿@using System.IO
+@model List<MvcApplication1.Models.Docs>
+@{
+    ViewBag.Title = "MyDocs";
+}
+<h2>MyDocs</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>@Html.ActionLink("Название", "MyDocs", new { sortOrder = ViewBag.NameSortParm })</th>
+            <th>@Html.ActionLink("Дата", "MyDocs", new { sortOrder = ViewBag.DateSortParm })</th>
+            <th>Автор</th>
+            <th>Просмотр</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var data in Model)
+        {
+            <tr>
+                <td>@Path.GetFileName(data.PathToFile)</td>
+                <td>@data.DateCreated</td>
+                <td>@data.User.Name</td>
+                <td>@Html.ActionLink("Просмотр документа", "DownloadFile", new { path = data.PathToFile })</td>
+            </tr>
+        }
+    </tbody>
+</table>

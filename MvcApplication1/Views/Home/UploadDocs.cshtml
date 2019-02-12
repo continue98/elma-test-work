@@ -4,7 +4,7 @@
 @Styles.Render("~/Content/dropzone-styles/dropzone.css")
 <div class="jumbotron">
     <div class="row">
-        @using (Html.BeginForm("Index", "Home",
+        @using (Html.BeginForm("UploadDocs", "Home",
                                FormMethod.Post,
                                new
                                {
@@ -15,11 +15,11 @@
             <div class="fallback">
                 <input name="file" type="file" multiple />
             </div>
-            <h6>
-                @ViewBag.ResultErrorMessage
-            </h6>
         }
     </div>
+    <h6 class="error_message_razor">
+        @ViewData["ErrorMessage"]
+    </h6>
 </div>
 @section scripts {
     @Scripts.Render("~/Scripts/dropzone/dropzone.min.js")

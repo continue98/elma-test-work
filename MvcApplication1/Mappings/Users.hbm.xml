@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" auto-import="true" assembly="MvcApplication1" namespace="MvcApplication1.Models">
-  <class name="Users" table="Users" dynamic-update="true" >
-    <cache usage="read-write"/>
-    <id name="Id" column="user_id" type="long">
-      <generator class="native" />
+  <class name="Users" table="Users">
+    <id name="Id">
+      <column name="user_id" not-null="true" />
+      <generator class="identity" />
     </id>
-    <property name="hash_password"  />
-    <property name="Email" />
-    <property name="Name" />
-    <property name="salt" />
+    <property name="HashPassword" column="hash_password"    />
+    <property name="Email" column="Email" />
+    <property name="Name" column="Name" />
+    <property name="Salt" column="salt" />
   </class>
 </hibernate-mapping>

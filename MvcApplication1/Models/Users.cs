@@ -7,10 +7,10 @@ namespace MvcApplication1.Models
 {
     public class Users
     {
-        public virtual long Id { get; set; }
-        public virtual string hash_password { get; set; }
+        public virtual int Id { get; set; }
+        public virtual string HashPassword { get; set; }
         public virtual string Email { get; set; }
         public virtual string Name { get; set; }
-        public virtual string salt { get; set; }
+        public virtual string Salt { get; set; }
     }
 }

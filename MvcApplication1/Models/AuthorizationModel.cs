@@ -8,6 +8,7 @@ namespace MvcApplication1.Models
 {
     public class AuthorizationModel
     {
+        public int Id { get; set; }
         [Required(ErrorMessage = "Поле \"Имя\" обязательное!")]
         [StringLength(40, MinimumLength = 3, ErrorMessage = "Имя должно быть от 3 до 40 символов")]
         public string Name { get; set; }
