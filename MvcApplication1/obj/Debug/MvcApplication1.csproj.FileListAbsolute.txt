@@ -63,7 +63,6 @@ A:\elma-test-work\MvcApplication1\bin\MvcApplication1.dll
 A:\elma-test-work\MvcApplication1\bin\MvcApplication1.pdb
 A:\elma-test-work\MvcApplication1\bin\Antlr3.Runtime.dll
 A:\elma-test-work\MvcApplication1\bin\CryptSharp.dll
-A:\elma-test-work\MvcApplication1\bin\EntityFramework.dll
 A:\elma-test-work\MvcApplication1\bin\Iesi.Collections.dll
 A:\elma-test-work\MvcApplication1\bin\Microsoft.Web.Infrastructure.dll
 A:\elma-test-work\MvcApplication1\bin\Newtonsoft.Json.dll
@@ -86,7 +85,6 @@ A:\elma-test-work\MvcApplication1\bin\CryptSharp.pdb
 A:\elma-test-work\MvcApplication1\bin\CryptSharp.xml
 A:\elma-test-work\MvcApplication1\bin\Iesi.Collections.xml
 A:\elma-test-work\MvcApplication1\bin\NHibernate.xml
-A:\elma-test-work\MvcApplication1\bin\EntityFramework.xml
 A:\elma-test-work\MvcApplication1\bin\Newtonsoft.Json.xml
 A:\elma-test-work\MvcApplication1\bin\System.Net.Http.xml
 A:\elma-test-work\MvcApplication1\bin\System.Net.Http.Formatting.xml
@@ -99,7 +97,6 @@ A:\elma-test-work\MvcApplication1\bin\System.Web.Razor.xml
 A:\elma-test-work\MvcApplication1\bin\System.Web.WebPages.xml
 A:\elma-test-work\MvcApplication1\bin\System.Web.WebPages.Deployment.xml
 A:\elma-test-work\MvcApplication1\bin\System.Web.WebPages.Razor.xml
-A:\elma-test-work\MvcApplication1\bin\ru\EntityFramework.resources.dll
 A:\elma-test-work\MvcApplication1\bin\ru\System.Net.Http.resources.dll
 A:\elma-test-work\MvcApplication1\bin\ru\System.Net.Http.Formatting.resources.dll
 A:\elma-test-work\MvcApplication1\bin\ru\System.Net.Http.WebRequest.resources.dll
