@@ -2,14 +2,16 @@
 <hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" auto-import="true" assembly="MvcApplication1" namespace="MvcApplication1.Models">
   <class name="Docs" table="doc_files">
     <id name="Id">
-      <column name="id_files" not-null="true" />
+      <column name="id_file" not-null="true" />
       <generator class="identity" />
     </id>
     <property name="UserId" column="user_id" />
     <property name="Date" column="date_created" />
     <property name="NameDoc" column="name_doc" />
-    <property name="PathToFile" column="path_to_files" />
-    <property name="Author" column="author_doc" />
+    <property name="PathToFile" column="path_to_file" />
     <many-to-one class="Users" name="User" column="user_id" insert="false" update="false" not-found="ignore" />
   </class>
+  <sql-query name="CreateDocument">
+    exec CreateDocument :UserID, :NameDoc, :PathToFile
+  </sql-query>
 </hibernate-mapping>

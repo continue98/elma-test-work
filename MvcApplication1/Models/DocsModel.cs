@@ -9,6 +9,7 @@ namespace MvcApplication1.Models
     {
         public virtual string NameDoc { set; get; }
         public virtual DateTime Date { set; get; }
-        public string Author { set; get; }
+        public virtual string Author { set; get; }
+        public virtual byte[] BinaryFile { get; set; }
     }
 }

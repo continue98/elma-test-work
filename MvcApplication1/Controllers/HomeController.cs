@@ -8,6 +8,8 @@ using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.Office.Interop.Word;
+using NHibernate.Criterion;
+
 namespace MvcApplication1.Controllers
 {
     public class HomeController : Controller
@@ -109,16 +111,32 @@ namespace MvcApplication1.Controllers
         [HttpPost]
         public ActionResult UploadDocs(HttpPostedFileBase file)
         {
-            MvcApplication1.src.DownloadHelper upl_file = new MvcApplication1.src.DownloadHelper(Session["session_key"].ToString());
-            string error_message = upl_file.UploadUserFile(file);
-            if (error_message != null)
+            Docs docs = new Docs();
+            using (var binaryReader = new System.IO.BinaryReader(Request.Files[0].InputStream))
             {
-                ViewData["ErrorMessage"] = upl_file.ErrorMessage;
+                docs.BinaryFile = binaryReader.ReadBytes(Request.Files[0].ContentLength);
+            }
+
+            docs.PathToFile = HttpContext.Server.MapPath(@"~/App_Data/uploads/Users/" + Session["session_key"] + "/" + file.FileName);
+            docs.NameDoc = System.IO.Path.GetFileName(docs.PathToFile);
+
+            using (var fs = new System.IO.FileStream(HttpContext.Server.MapPath(@"~/App_Data/uploads/Users/" + Session["session_key"] + "/" + file.FileName), 
+                                System.IO.FileMode.Create, System.IO.FileAccess.Write))
+            {
+                fs.Write(docs.BinaryFile, 0, docs.BinaryFile.Length);
+            }
+            using (ISession session = NHibernateSessionManeger.OpenSession())
+            {
+                // :UserID, :NameDoc, :PathToFile
+                session.GetNamedQuery("CreateDocument").
+                        SetParameter("UserID", Session["session_id"]).
+                        SetParameter("NameDoc", docs.NameDoc).
+                        SetParameter("PathToFile", docs.PathToFile).UniqueResult();
             }
             return View();
 
         }
-        public ActionResult MyDocs(string sortOrder)
+        public ActionResult MyDocs(string sortOrder, string searchName, DateTime ? searchDate)
         {
             if (Session["session_key"] == null)
                 return RedirectToAction("Index");
@@ -128,9 +146,25 @@ namespace MvcApplication1.Controllers
 
             using (ISession session = NHibernateSessionManeger.OpenSession())
             {
-                var resultList = new List<Docs>();
+                IList<Docs> resultList = new List<Docs>();
+
                 var query = session.QueryOver<Docs>();
-                resultList = query.Where(x => x.UserId == 5).List().ToList();
+                var v = query.List().ToList();
+                var b = v[0].Date;
+                resultList = query.Where(x => x.UserId == Convert.ToInt64(Session["session_id"])).List();
+
+                if (!String.IsNullOrEmpty(searchDate.ToString()))
+                {
+                    resultList = query.Where(s => s.Date.Day == searchDate.Value.Day && 
+                                                  s.Date.Month == searchDate.Value.Month && 
+                                                  s.Date.Year == searchDate.Value.Year).List();
+                    ViewBag.SearchDate = searchDate;
+                }
+                if (!String.IsNullOrEmpty(searchName))
+                {
+                    resultList = query.Where(s => s.NameDoc.IsLike(searchName, MatchMode.Anywhere)).List();
+                    ViewBag.SearchName = searchName;
+                }
                 switch (sortOrder)
                 {
                     case "name_desc":

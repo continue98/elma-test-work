@@ -1,15 +1,36 @@
 ﻿@using System.IO
-@model List<MvcApplication1.Models.Docs>
+@model IList<MvcApplication1.Models.Docs>
 @{
     ViewBag.Title = "MyDocs";
 }
+@Styles.Render("~/Content/jquery.datetimepicker.min.css")
 <h2>MyDocs</h2>
+
+<div>
+    @using (Html.BeginForm())
+    {
+        <div class="container">
+            <div class="form-group">
+                <div class="col-md-10">
+                    @Html.TextBox("SearchDate", "", "", new { id = "datetimepicker" })
+                    <input type="submit" value="Search Date" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-10">
+                    @Html.TextBox("SearchName")
+                    <input type="submit" value="Search by Name" />
+                </div>
+            </div>
+        </div>
+    }
+</div>
 
 <table class="table table-bordered">
     <thead>
         <tr>
-            <th>@Html.ActionLink("Название", "MyDocs", new { sortOrder = ViewBag.NameSortParm })</th>
-            <th>@Html.ActionLink("Дата", "MyDocs", new { sortOrder = ViewBag.DateSortParm })</th>
+            <th>@Html.ActionLink("Название", "MyDocs", new { sortOrder = ViewBag.NameSortParm, searchName = ViewBag.SearchName, searchDate = ViewBag.SearchDate })</th>
+            <th>@Html.ActionLink("Дата", "MyDocs", new { sortOrder = ViewBag.DateSortParm, searchName = ViewBag.SearchName, searchDate = ViewBag.SearchDate })</th>
             <th>Автор</th>
             <th>Просмотр</th>
         </tr>
@@ -19,10 +40,19 @@
         {
             <tr>
                 <td>@Path.GetFileName(data.PathToFile)</td>
-                <td>@data.DateCreated</td>
+                <td>@data.Date</td>
                 <td>@data.User.Name</td>
                 <td>@Html.ActionLink("Просмотр документа", "DownloadFile", new { path = data.PathToFile })</td>
             </tr>
         }
     </tbody>
 </table>
+@section scripts {
+    @Scripts.Render("~/Scripts/jquery.datetimepicker.full.min.js")
+    <script>
+        jQuery('#datetimepicker').datetimepicker({
+            format: 'd.m.Y',
+            lang: 'ru'
+        });
+    </script>
+}

@@ -5,9 +5,9 @@
       <column name="user_id" not-null="true" />
       <generator class="identity" />
     </id>
+    <property name="Name" column="name" />
+    <property name="Email" column="email" />
     <property name="HashPassword" column="hash_password"    />
-    <property name="Email" column="Email" />
-    <property name="Name" column="Name" />
     <property name="Salt" column="salt" />
   </class>
 </hibernate-mapping>

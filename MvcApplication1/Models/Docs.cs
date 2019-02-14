@@ -11,6 +11,5 @@ namespace MvcApplication1.Models
         public virtual int UserId { get; set; }
         public virtual string PathToFile { get; set; }
         public virtual Users User { get; set; }
-        protected byte BinaryFile;
     }
 }
