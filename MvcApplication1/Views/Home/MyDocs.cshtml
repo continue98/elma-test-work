@@ -1,57 +1,74 @@
 ﻿@using System.IO
+@using System.Text.RegularExpressions;
 @model IList<MvcApplication1.Models.Docs>
 @{
     ViewBag.Title = "MyDocs";
 }
 @Styles.Render("~/Content/jquery.datetimepicker.min.css")
-<h2>MyDocs</h2>
-
-<div>
-    @using (Html.BeginForm())
-    {
-        <div class="container">
-            <div class="form-group">
-                <div class="col-md-10">
-                    @Html.TextBox("SearchDate", "", "", new { id = "datetimepicker" })
-                    <input type="submit" value="Search Date" />
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-md-10">
-                    @Html.TextBox("SearchName")
-                    <input type="submit" value="Search by Name" />
-                </div>
-            </div>
-        </div>
-    }
-</div>
-
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>@Html.ActionLink("Название", "MyDocs", new { sortOrder = ViewBag.NameSortParm, searchName = ViewBag.SearchName, searchDate = ViewBag.SearchDate })</th>
-            <th>@Html.ActionLink("Дата", "MyDocs", new { sortOrder = ViewBag.DateSortParm, searchName = ViewBag.SearchName, searchDate = ViewBag.SearchDate })</th>
-            <th>Автор</th>
-            <th>Просмотр</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var data in Model)
-        {
+@if (Model.Count > 0)
+{
+    <table class="table table-bordered">
+        <thead>
             <tr>
-                <td>@Path.GetFileName(data.PathToFile)</td>
-                <td>@data.Date</td>
-                <td>@data.User.Name</td>
-                <td>@Html.ActionLink("Просмотр документа", "DownloadFile", new { path = data.PathToFile })</td>
+                <th>@Html.ActionLink("Название", "MyDocs", new { sortOrder = ViewBag.NameSortParm, searchName = ViewBag.SearchName, searchDate = ViewBag.SearchDate })</th>
+                <th>@Html.ActionLink("Дата", "MyDocs", new { sortOrder = ViewBag.DateSortParm, searchName = ViewBag.SearchName, searchDate = ViewBag.SearchDate })</th>
+                <th>Автор</th>
+                <th>Просмотр</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var data in Model)
+            {
+                <tr>
+                    @if (@Path.GetFileName(data.PathToFile).Length >= 30)
+                    {
+                        var new_name = @Regex.Replace(@data.NameDoc, @"^(.{1,30}).*$", @"$1...");
+                        <td>
+                            @new_name
+                        </td>
+                    }
+                    else
+                    {
+                        <td>@data.NameDoc</td>
+                    }
+                    <td>@data.Date</td>
+                    <td>@data.User.Name</td>
+                    <td>@Html.ActionLink("Просмотр документа", "DownloadFile", new { path = data.PathToFile, filename = data.NameDoc })</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div>
+@using (Html.BeginForm())
+{
+        <center>
+            <div class="container">
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @Html.TextBox("SearchDate", "", "", new { id = "datetpicker" })
+                        <input type="submit" value="Search Date" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-10">
+                        @Html.TextBox("SearchName")
+                        <input type="submit" value="Search by Name" />
+                    </div>
+                </div>
+            </div>
+        </center>
+}
+</div>
+}
+else
+{
+    <h6 class="error_message_razor">У вас нет документов!</h6>
+}
 @section scripts {
     @Scripts.Render("~/Scripts/jquery.datetimepicker.full.min.js")
     <script>
-        jQuery('#datetimepicker').datetimepicker({
-            format: 'd.m.Y',
+        jQuery('#datetpicker').datepicker({
+            format: 'dd.mm.yyyy',
             lang: 'ru'
         });
     </script>

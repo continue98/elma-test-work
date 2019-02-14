@@ -16,7 +16,6 @@ namespace MvcApplication1.Controllers
     {
         public ActionResult Index()
         {
-
             return View();
         }
         public ActionResult Registration()
@@ -34,6 +33,8 @@ namespace MvcApplication1.Controllers
         [HttpPost]
         public ActionResult Registration(Models.RegistrationModel reg_model)
         {
+            if (Session["session_key"] != null)
+                return RedirectToAction("index");
             using (NHibernate.ISession session = NHibernateSessionManeger.OpenSession())
             {
                 if (!ModelState.IsValid)
@@ -75,11 +76,11 @@ namespace MvcApplication1.Controllers
                     return View();
                 }
 
-                Users usr = query.List<Users>()[0];
-                string name = usr.Name;
-                string hashed_password = usr.HashPassword;
-                string salt = usr.Salt;
-                int id = usr.Id;
+                var usr = query.List<Users>().ToArray();
+                string name = usr[0].Name;
+                string hashed_password = usr[0].HashPassword;
+                string salt = usr[0].Salt;
+                int id = usr[0].Id;
                 
 
                 HashUtillity hashUtillty = new HashUtillity();
@@ -111,23 +112,34 @@ namespace MvcApplication1.Controllers
         [HttpPost]
         public ActionResult UploadDocs(HttpPostedFileBase file)
         {
+            if (Session["session_key"] == null)
+                return RedirectToAction("index");
             Docs docs = new Docs();
+            docs.PathToFile = HttpContext.Server.MapPath(@"~/App_Data/uploads/Users/" + Session["session_key"] + "/");
+            docs.NameDoc = System.IO.Path.GetFileName(docs.PathToFile + "/" + file.FileName);
+
+            if(System.IO.File.Exists(docs.PathToFile + docs.NameDoc))
+            {
+                return new HttpStatusCodeResult(400, "file already exists");
+            }
             using (var binaryReader = new System.IO.BinaryReader(Request.Files[0].InputStream))
             {
                 docs.BinaryFile = binaryReader.ReadBytes(Request.Files[0].ContentLength);
             }
 
-            docs.PathToFile = HttpContext.Server.MapPath(@"~/App_Data/uploads/Users/" + Session["session_key"] + "/" + file.FileName);
-            docs.NameDoc = System.IO.Path.GetFileName(docs.PathToFile);
 
-            using (var fs = new System.IO.FileStream(HttpContext.Server.MapPath(@"~/App_Data/uploads/Users/" + Session["session_key"] + "/" + file.FileName), 
-                                System.IO.FileMode.Create, System.IO.FileAccess.Write))
+
+            if(!System.IO.Directory.Exists(docs.PathToFile))
+            {
+                System.IO.Directory.CreateDirectory(docs.PathToFile);
+            }
+
+            using (var fs = new System.IO.FileStream(docs.PathToFile + docs.NameDoc, System.IO.FileMode.Create, System.IO.FileAccess.Write))
             {
                 fs.Write(docs.BinaryFile, 0, docs.BinaryFile.Length);
             }
             using (ISession session = NHibernateSessionManeger.OpenSession())
             {
-                // :UserID, :NameDoc, :PathToFile
                 session.GetNamedQuery("CreateDocument").
                         SetParameter("UserID", Session["session_id"]).
                         SetParameter("NameDoc", docs.NameDoc).
@@ -136,6 +148,7 @@ namespace MvcApplication1.Controllers
             return View();
 
         }
+        // thank for documentation https://docs.microsoft.com/ru-ru/aspnet/mvc/overview/getting-started/getting-started-with-ef-using-mvc/sorting-filtering-and-paging-with-the-entity-framework-in-an-asp-net-mvc-application
         public ActionResult MyDocs(string sortOrder, string searchName, DateTime ? searchDate)
         {
             if (Session["session_key"] == null)
@@ -149,8 +162,6 @@ namespace MvcApplication1.Controllers
                 IList<Docs> resultList = new List<Docs>();
 
                 var query = session.QueryOver<Docs>();
-                var v = query.List().ToList();
-                var b = v[0].Date;
                 resultList = query.Where(x => x.UserId == Convert.ToInt64(Session["session_id"])).List();
 
                 if (!String.IsNullOrEmpty(searchDate.ToString()))
@@ -182,29 +193,41 @@ namespace MvcApplication1.Controllers
             }
         }
         [HttpGet]
-        public ActionResult DownloadFile(string path)
+        public ActionResult DownloadFile(string path, string filename)
         {
             if (Session["session_key"] == null)
                 return RedirectToAction("Index");
 
-            string filePath = path;
+
+            Docs docs = new Docs();
+            docs.PathToFile = path;
+
+            System.IO.FileStream fs = new System.IO.FileStream(path, System.IO.FileMode.Open, System.IO.FileAccess.Read);
+            using (var binaryReader = new System.IO.BinaryReader(fs))
+            {
+                docs.BinaryFile = binaryReader.ReadBytes(Convert.ToInt32(binaryReader.BaseStream.Length));
+            }
+
+            docs.PathToFile = HttpContext.Server.MapPath(@"~/App_Data/uploads/Users/" + Session["session_key"] + "/");
+            docs.NameDoc = System.IO.Path.GetFileName(docs.PathToFile);
+            docs.Author = Session["session_key"].ToString();
+
             string mime_type = "";
             string extensions = System.IO.Path.GetExtension(path).ToLower();
 
-            /* Not good idea. In net framework 4.5 - use 
-             *  https://docs.microsoft.com/en-us/dotnet/api/system.web.mimemapping.getmimemapping?redirectedfrom=MSDN&view=netframework-4.7.2#System_Web_MimeMapping_GetMimeMapping_System_String_
-             */
             if (extensions == ".pdf")
             {
                 mime_type = "application/pdf";
             }
-            else if(extensions == ".doc")
+            else if (extensions == ".doc")
             {
                 mime_type = "application/msword";
             }
-            Response.AddHeader("Content-Disposition", "inline; filename=" + System.IO.Path.GetFileName(filePath));
 
-            return File(filePath, mime_type);
+            Response.BinaryWrite(docs.BinaryFile);
+            Response.ContentType = mime_type;
+            Response.Headers["Content-Disposition"] = $"inline; filename= " + filename;
+            return View();
         }
     }
 }

@@ -158,14 +158,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\authorization.css" />
-    <Content Include="Content\bootstrap-datepicker.css" />
-    <Content Include="Content\bootstrap-datepicker.min.css" />
-    <Content Include="Content\bootstrap-datepicker.standalone.css" />
-    <Content Include="Content\bootstrap-datepicker.standalone.min.css" />
-    <Content Include="Content\bootstrap-datepicker3.css" />
-    <Content Include="Content\bootstrap-datepicker3.min.css" />
-    <Content Include="Content\bootstrap-datepicker3.standalone.css" />
-    <Content Include="Content\bootstrap-datepicker3.standalone.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\dropzone.css" />
@@ -214,10 +206,6 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\dropdown.css" />
-    <Content Include="Content\bootstrap-datepicker3.standalone.css.map" />
-    <Content Include="Content\bootstrap-datepicker3.css.map" />
-    <Content Include="Content\bootstrap-datepicker.standalone.css.map" />
-    <Content Include="Content\bootstrap-datepicker.css.map" />
     <EmbeddedResource Include="Mappings\Users.hbm.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>

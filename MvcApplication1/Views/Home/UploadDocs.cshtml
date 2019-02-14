@@ -17,18 +17,21 @@
             </div>
         }
     </div>
-    <h6 class="error_message_razor">
-        @ViewData["ErrorMessage"]
-    </h6>
 </div>
+<p>
+    <h6 class="error_message_razor">
+        @ViewBag.error
+    </h6>
+</p>
 @section scripts {
     @Scripts.Render("~/Scripts/dropzone/dropzone.min.js")
 
-    <script type="text/javascript">
+<script type="text/javascript">
         Dropzone.options.dropzoneForm = {
             paramName: "file",
             maxFilesize: 20,
             maxFiles: null,
+
             acceptedFiles: ".doc,.pdf",
             dictDefaultMessage: "Нажмитие / перетащите файлы, чтобы загрузить их на сервер",
             dictMaxFilesExceeded: "Custom max files msg",
